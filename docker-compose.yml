@@ -4,10 +4,22 @@ services:
   bind9:
     container_name: bind9
     image: ubuntu/bind9:latest
+    environment:
+      - BIND9_USER=root
+      - TZ=Asia/Kuching
     volumes:
-      - /etc/bind/:/etc/bind/
-      - /var/cache/bind:/var/cache/bind
-      - /var/lib/bind:/var/lib/bind
+      - ./config:/etc/bind
+      - ./cache:/var/cache/bind
+      - /records:/var/lib/bind
     ports:
-      - 53:53
+      - 53:53/tcp
+      - 53:53/udp
     restart: unless-stopped
+
+# sudo nano /etc/systemd/resolved.conf
+# Uncomment and Change DNSStubListener=no
+# sudo systemctl restart systemd-resolved
+# docker compose up -d
+
+# nslookup srv-demo-2.demo.clcreative.de 10.20.3.4
+# nslookup test.srv-demo-2.demo.clcreative.de 10.20.3.4
