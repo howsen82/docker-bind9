@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  bind9:
+    container_name: bind9
+    image: ubuntu/bind9:latest
+    volumes:
+      - /etc/bind/:/etc/bind/
+      - /var/cache/bind:/var/cache/bind
+      - /var/lib/bind:/var/lib/bind
+    ports:
+      - 53:53
+    restart: unless-stopped
